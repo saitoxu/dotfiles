@@ -17,14 +17,14 @@ case ${UID} in
     PROMPT="%B%{${fg[red]}%}%/#%{${reset_color}%}%b "
     PROMPT2="%B%{${fg[red]}%}%_#%{${reset_color}%}%b "
     SPROMPT="%B%{${fg[red]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
-    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] && 
+    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
         PROMPT="%{${fg[cyan]}%}$(echo ${HOST%%.*} | tr '[a-z]' '[A-Z]') ${PROMPT}"
     ;;
 *)
     PROMPT="%{${fg[red]}%}%/%%%{${reset_color}%} "
     PROMPT2="%{${fg[red]}%}%_%%%{${reset_color}%} "
     SPROMPT="%{${fg[red]}%}%r is correct? [n,y,a,e]:%{${reset_color}%} "
-    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] && 
+    [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
         PROMPT="%{${fg[cyan]}%}$(echo ${HOST%%.*} | tr '[a-z]' '[A-Z]') ${PROMPT}"
     ;;
 esac
@@ -34,7 +34,9 @@ esac
 case "${TERM}" in
 kterm*|xterm*)
     precmd() {
-        echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
+#       echo -ne "\033]0;${USER}@${HOST%%.*}:${PWD}\007"
+        echo -ne "\e]2;${PWD:t}\a"
+        echo -ne "\e]1;${PWD:t}\a"
     }
     export LSCOLORS=exfxcxdxbxegedabagacad
 #    export LSCOLORS=gxfxcxdxbxegedabagacad
@@ -53,5 +55,5 @@ export MANPATH=/opt/local/man:$MANPATH
 export TERM=xterm-256color
 export PATH=$PATH:/Applications/XAMPP/xamppfiles/bin
 export PATH=$PATH:/Applications/android-sdk-macosx/platform-tools
-export _JAVA_OPTIONS='-Dfile.encoding=UTF-8'
-keychain ~/.ssh/github_id_rsa
+# export _JAVA_OPTIONS='-Dfile.encoding=UTF-8'
+# keychain ~/.ssh/github_id_rsa

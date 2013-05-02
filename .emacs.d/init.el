@@ -24,6 +24,12 @@
 ;; ツールバー非表示
 (tool-bar-mode -1)
 
+(when (require 'color-theme nil t)
+  ;; テーマを読み込むための設定
+  (color-theme-initialize)
+  ;; テーマClarityに変更する
+  (color-theme-dark-laptop))
+
 ;; メニューバーを非表示
 (menu-bar-mode -1)
 
@@ -34,11 +40,30 @@
 (setq frame-title-format
       (format "%%f - Emacs@%s" (system-name)))
 
+;; (set-language-environment "Japanese")
+;; (set-default-coding-systems 'utf-8)
+;; (set-terminal-coding-system 'utf-8)
+;; (set-keyboard-coding-system 'utf-8)
+;; (set-buffer-file-coding-system 'utf-8)
+
+;; 改行コードを押してインデントも行う
+(global-set-key (kbd "C-m") 'newline-and-indent)
+
+;; 折り返しトグルコマンド
+(define-key global-map (kbd "C-c l") 'toggle-truncate-lines)
+
+;; "C-t"でウィンドウを切り替え．初期値はtranspose-chars
+(define-key global-map (kbd "C-t") 'other-window)
+
+;; 文字コード指定
 (set-language-environment "Japanese")
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(set-buffer-file-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+
+;; Mac OS Xの場合のファイル名の設定
+(when (eq system-type 'darwin)
+  (require 'ucs-normalize)
+  (set-file-name-coding-system 'utf-8-hfs)
+  (setq locale-coding-system 'utf-8-hfs))
 
 ;; 行番号表示
 (global-linum-mode t)
@@ -67,8 +92,11 @@
 ;; タブをスペースで扱う
 (setq-default indent-tabs-mode nil)
 
+;; TABの表示幅．初期値は8
+(setq-default tab-width 4)
+
 ;; タブ幅
-(custom-set-variables '(tab-width 4))
+;; (custom-set-variables '(tab-width 4))
 
 ;; yes or noをy or n
 (fset 'yes-or-no-p 'y-or-n-p)
