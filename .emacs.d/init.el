@@ -40,11 +40,11 @@
 (setq frame-title-format
       (format "%%f - Emacs@%s" (system-name)))
 
-;; (set-language-environment "Japanese")
-;; (set-default-coding-systems 'utf-8)
-;; (set-terminal-coding-system 'utf-8)
-;; (set-keyboard-coding-system 'utf-8)
-;; (set-buffer-file-coding-system 'utf-8)
+; (set-language-environment "Japanese")
+; (set-default-coding-systems 'utf-8)
+; (set-terminal-coding-system 'utf-8)
+; (set-keyboard-coding-system 'utf-8)
+; (set-buffer-file-coding-system 'utf-8)
 
 ;; 改行コードを押してインデントも行う
 (global-set-key (kbd "C-m") 'newline-and-indent)
@@ -75,9 +75,11 @@
 (setq linum-format "%4d")
 
 ;; 括弧の範囲内を強調表示
-(show-paren-mode t)
 (setq show-paren-delay 0)
+(show-paren-mode t)
 (setq show-paren-style 'expression)
+(set-face-background 'show-paren-match-face nil)
+(set-face-underline-p 'show-paren-match-face "yellow")
 
 ;; 括弧の範囲色
 (set-face-background 'show-paren-match-face "#000")
@@ -96,7 +98,7 @@
 (setq-default tab-width 4)
 
 ;; タブ幅
-;; (custom-set-variables '(tab-width 4))
+; (custom-set-variables '(tab-width 4))
 
 ;; yes or noをy or n
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -117,7 +119,7 @@
 (setq history-length 3000)
 
 ;; バックアップを残さない
-(setq make-backup-files nil)
+; (setq make-backup-files nil)
 
 ;; 1行ずつスクロール
 (setq scroll-conservatively 35
@@ -138,6 +140,12 @@
 ;; 詳しいキーバインド操作：http://dev.ariel-networks.com/articles/emacs/part5/
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
+
+;; バックアップとオートセーブファイルを~/.emacs.d/backups/へ集める
+(add-to-list 'backup-directory-alist
+             (cons "." "~/projects/dotfiles/.emacs.d/backups/"))
+(setq auto-save-file-name-transforms
+      `((".*" ,(expand-file-name "~/projects/dotfiles/.emacs.d/backups/") t)))
 
 ;; ------------------------------------------------------------------------
 ;; @ modeline
@@ -166,6 +174,6 @@
 
 ;; php-mode
 (require 'php-mode)
-(setq php-mode-force-pear t) ;PEAR規約のインデント設定にする
+(setq php-mode-force-pear t) ; PEAR規約のインデント設定にする
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
-;*.phpのファイルのときにphp-modeを自動起動する
+; *.phpのファイルのときにphp-modeを自動起動する
