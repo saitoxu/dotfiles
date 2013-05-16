@@ -5,6 +5,7 @@ alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 alias javac='javac -J-Dfile.encoding=UTF-8'
 alias java='java -Dfile.encoding=UTF-8'
 alias firefox='/Applications/Firefox.app/Contents/MacOS/firefox'
+alias ruby='/opt/local/bin/ruby1.9'
 
 ## Default shell configuration
 #
@@ -57,3 +58,9 @@ export PATH=$PATH:/Applications/XAMPP/xamppfiles/bin
 export PATH=$PATH:/Applications/android-sdk-macosx/platform-tools
 # export _JAVA_OPTIONS='-Dfile.encoding=UTF-8'
 # keychain ~/.ssh/github_id_rsa
+
+## set JAVA_HOME
+# JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home
+# export JAVA_HOME
+# PATH=$PATH:$JAVA_HOME/bin
+# export PATH

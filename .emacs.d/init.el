@@ -177,3 +177,83 @@
 (setq php-mode-force-pear t) ; PEAR規約のインデント設定にする
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 ; *.phpのファイルのときにphp-modeを自動起動する
+
+;; emacs-lisp-mode-hook用の関数を定義
+(defun elisp-mode-hooks ()
+  "lisp-mode-hooks"
+  (when (require 'eldoc nil t)
+    (setq eldoc-idle-delay 0.2)
+    (setq eldoc-echo-area-use-multiline-p t)
+    (turn-on-eldoc-mode)))
+
+;; emacs-lisp-modeのフックをセット
+(add-hook 'emacs-lisp-mode-hook 'elisp-mode-hooks)
+
+;; auto-installの設定
+; (when (require 'auto-install nil t)
+  ;; インストールディレクトリを設定する
+  ; (setq auto-install-directory "~/.emacs.d/elisp/")
+  ;; EmacsWikiに登録されているelispの名前を取得する
+  ; (auto-install-update-emacswiki-package-name t)
+  ;; 必要であればプロキシの設定を行う
+  ;; プロキシの設定は~/.wgetrcに書いてある
+  ; (setq url-proxy-services '(("http" . "proxy.kuins.net:8080")))
+  ;; install-elispの関数を利用可能にする
+  ; (auto-install-compatibility-setup))
+
+;; 10秒で終了しなかったらauto-installをあきらめる
+;; プロキシの影響でemacs起動しないのを防ぐため
+(with-timeout (10 nil)
+  (when (require 'auto-install nil t)
+    (setq auto-install-directory "~/.emacs.d/elisp/")
+    (auto-install-update-emacswiki-package-name t)
+    (auto-install-compatibility-setup)))
+
+;; redo+の設定
+ (when (require 'redo+ nil t)
+  ;; C-t にリドゥを割り当てる
+   (global-set-key (kbd "C-t") 'redo))
+
+;;; anything
+;; (auto-install-batch "anything")
+(when (require 'anything nil t)
+  (setq
+   ;; 候補を表示するまでの時間．デフォルトは0.5
+   anything-idle-delay 0.3
+   ;; タイプして再描画するまでの時間．デフォルトは0.1
+   anything-input-idle-delay 0.2
+   ;; 候補の最大表示件数．デフォルトは50
+   anything-candidate-number-limit 100
+   ;; 候補が多い時に体感速度を早くする
+   anything-quick-update t
+   ;; 候補選択ショートカットをアルファベットに
+   anything-enable-shortcuts 'alphabet)
+
+  (when (require 'anything-config nil t)
+    ;; root権限でアクションを実行するときのコマンド
+    ;; デフォルトは"su"
+    (setq anything-su-ro-sudo "sudo"))
+
+  (require 'anything-match-plugin nil t)
+
+  (when (and (executable-find "cmigemo")
+             (require 'migemo nil t))
+    (require 'anything-migemo nil t))
+
+  (when (require 'anything-complete nil t)
+    ;; lispシンボルの補完候補の再検索時間
+    (anything-lisp-complete-symbol-set-timer 150))
+
+  (require 'anything-show-completion nil t)
+
+  (when (require 'auto-install nil t)
+    (require 'anything-auto-install nil t))
+
+  (when (require 'descbinds-anything nil t)
+    ;; describe-bindingsをAnythingに置き換える
+    (descbinds-anything-install)))
+
+;; シンボリックリンクの読み込みを許可
+(setq vc-follow-symlinks t)
+;; シンボリックリンク先のVCS内で更新が入った場合にバッファを自動更新
+(setq auto-revert-check-vc-info t)

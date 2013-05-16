@@ -1,0 +1,41 @@
+import java.io.*;
+import java.util.*;
+
+public class Problem33 {
+    public static void main(String[] args) {
+        int bunshi = 0;
+        int bunbo = 0;
+        int splited_bunshi = 0;
+        int splited_bunbo = 0;
+        int temp_splited_bunshi = 0;
+        int temp_splited_bunbo = 0;
+        // ArrayList<Integer> bunshi_list = new ArrayList<Integer>();
+        // ArrayList<Integer> bunbo_list = new ArrayList<Integer>();
+
+        for (bunshi = 10; bunshi < 99; bunshi++) {
+            for (bunbo = bunshi + 1; bunbo < 100; bunbo++) {
+                splited_bunshi = 0;
+                splited_bunbo = 0;
+                if ((bunshi % 10 != 0 || bunbo % 10 != 0) && (bunshi % 11 != 0 || bunbo % 11 != 0)) {
+                    for (int i = 0; i < 2; i++) {
+                        for (int j = 0; j < 2; j++) {
+                            temp_splited_bunshi = Integer.parseInt(Integer.toString(bunshi).substring(i, i + 1));
+                            temp_splited_bunbo = Integer.parseInt(Integer.toString(bunbo).substring(j, j + 1));
+                            if (temp_splited_bunshi == temp_splited_bunbo) {
+                                // System.out.println(Integer.toString(bunshi).substring(1 - i, 1 - i));
+                                splited_bunshi = Integer.parseInt(Integer.toString(bunshi).substring(1 - i, 2 - i));
+                                splited_bunbo = Integer.parseInt(Integer.toString(bunbo).substring(1 - j, 2 - j));
+                            }
+                        }
+                    }
+                    // splited_bunshi = Integer.toString(bunshi).substring(0, 1);
+                    if (splited_bunbo != 0 && bunshi * splited_bunbo == bunbo * splited_bunshi) {
+                        System.out.println(bunshi + "/" + bunbo);
+                        bunshi_list.add(splited_bunshi);
+                        bunbo_list.add(splited_bunbo);
+                    }
+                }
+            }
+        }
+    }
+}

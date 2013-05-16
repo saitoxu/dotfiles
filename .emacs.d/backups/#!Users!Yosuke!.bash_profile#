@@ -1,0 +1,14 @@
+export PATH=$PATH:/Applications/android-sdk-macosx/platform-tools
+export PATH=$PATH:/Applications/XAMPP/xamppfiles/bin
+alias javac='javac -J-Dfile.encoding=UTF-8'
+alias java='java -Dfile.encoding=UTF-8'
+
+##
+# Your previous /Users/Yosuke/.bash_profile file was backed up as /Users/Yosuke/.bash_profile.macports-saved_2012-12-11_at_00:13:55
+##
+
+# MacPorts Installer addition on 2012-12-11_at_00:13:55: adding an appropriate PATH variable for use with MacPorts.
+export PATH=/opt/local/bin:/opt/local/sbin:$PATH
+# Finished adapting your PATH environment variable for use with MacPorts.
+
+test -r /sw3/bin/init.sh && . /sw3/bin/init.sh

@@ -1,0 +1,29 @@
+Host www.ai.soc.i.kyoto-u.ac.jp
+     HostName 133.3.251.109
+     Port 22
+     User saito
+     IdentityFile ~/.ssh/id_rsa
+Host greenwhale
+     HostName 10.229.59.221
+     Port 22
+     User adauction
+     # PreferredAuthentications password
+     IdentityFile ~/.ssh/whale_id_rsa
+     IdentitiesOnly yes
+Host whitewhale
+     HostName 10.229.59.224
+     Port 22
+     User adauction
+     # IdentityFile ~/.ssh/whale_id_rsa
+Host github.com
+     User git
+     Port 22
+     Hostname github.com
+     IdentityFile ~/.ssh/github_id_rsa
+     TCPKeepAlive yes
+     IdentitiesOnly yes
+Host sakura
+     User saitoxu
+     Port 1202
+     Hostname 133.242.155.124
+     IdentityFile ~/.ssh/sakura_id_rsa

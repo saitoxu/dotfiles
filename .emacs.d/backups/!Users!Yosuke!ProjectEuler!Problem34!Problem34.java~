@@ -1,0 +1,46 @@
+import java.io.*;
+
+public class Problem34 {
+    public static void main(String[] args) {
+        int[] factorial = new int[10];
+        int ans_sum = 0;
+        int tmp_sum = 0;
+        String str = "";
+
+        factorial[0] = factorial(0);
+        factorial[1] = factorial(1);
+        factorial[2] = factorial(2);
+        factorial[3] = factorial(3);
+        factorial[4] = factorial(4);
+        factorial[5] = factorial(5);
+        factorial[6] = factorial(6);
+        factorial[7] = factorial(7);
+        factorial[8] = factorial(8);
+        factorial[9] = factorial(9);
+
+        for (int i = 3; i < 2540160; i++) {
+            str = Integer.toString(i);
+            for (int j = 0; j < str.length(); j++) {
+                tmp_sum += factorial[Integer.parseInt(str.charAt(j) + "")];
+            }
+            if (i == tmp_sum) {
+                System.out.println(i);
+                ans_sum += i;
+            }
+            tmp_sum = 0;
+        }
+        System.out.println("ans_sum = " + ans_sum);
+    }
+
+    private static int factorial(int i) {
+        int ans = 1;
+        if (i == 0) {
+            return 1;
+        } else {
+            for (int j = 1; j <= i; j++) {
+                ans *= j;
+            }
+            return ans;
+        }
+    }
+}
