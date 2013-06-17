@@ -1,24 +1,24 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-int main(void)
+#include<stdio.h>
+int main()
 {
-  FILE *fp1;
-  char s[256];
-  if ((fp1 = fopen("mylecture.txt", "r")) == NULL) {
-    printf("file open error!!\n");
-    exit(EXIT_FAILURE);
-  }
-  FILE *fp2;
-  if ((fp2 = fopen("mylecture.data", "w")) == NULL) {
-    printf("file open error!!\n");
-    exit(EXIT_FAILURE);
-  }
-  while (fgets(s, 256, fp1) != NULL) {
+  char filename[250];
+  FILE *fp,*fr;
 
-    fprintf(fp2,"Mo1\t%s",s);
-  }
-  fclose(fp1);
-  fclose(fp2);
-  return(0);
+  fp = fopen("mylecture.txt","r");
+  fr = fopen("mylecture.data","w");
+
+  fscanf(fp,"%s",filename);
+  fprintf(fr,"Mo1\t%s\n",filename);
+  fscanf(fp,"%s",filename);
+  fprintf(fr,"Tu1\t%s\n",filename);
+  fscanf(fp,"%s",filename);
+  fprintf(fr,"Tu3\t%s\n",filename);
+  fscanf(fp,"%s",filename);
+  fprintf(fr,"Th2\t%s\n",filename);
+  fscanf(fp,"%s",filename);
+  fprintf(fr,"Fr2\t%s\n",filename);
+
+  fclose(fp);
+  fclose(fr);
+  return 0;
 }

@@ -1,0 +1,12 @@
+import java.applet.*;
+import java.awt.*;
+
+public class AppletTest1 extends Applet {
+    @Override
+    pubilc void paint(Graphics g) {
+        g.setColor(Color.red);
+
+        Dimension size = getSize();
+        g.fillRect(0, 0, size.width - 1, size.height - 1);
+    }
+}

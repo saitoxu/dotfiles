@@ -1,0 +1,99 @@
+package adauction.simulator;
+
+import java.util.ArrayList;
+import lpsolve.*;
+
+public class Lp {
+    private double budget;
+    private double cpa;
+    private ArrayList<Double> icvr;
+    private ArrayList<Double> prices;
+    private int quota;
+    private int adSpaceNum;
+
+    // コンストラクタ，全変数初期化，各ステップで新しいインスタンスが呼び出される
+    public Lp(double _budget, double _cpa, ArrayList<Double> _icvr, int _quota, ArrayList<Double> _prices) {
+	budget = _budget;
+	cpa = _cpa;
+	icvr = _icvr;
+	prices = _prices;
+	quota = _quota;
+	adSpaceNum = icvr.size();
+    }
+
+    // 1ステップ前の各広告枠でのインプレッション数を受け取って，
+    // 現在の各広告枠でのインプレッション数をLPを解いて計算，返す
+    public ArrayList<Integer> solveLp(int[] previousImps) {
+	ArrayList<Integer> imps = new ArrayList<Integer>();
+
+	try {
+	    // 問題設定
+	    // 制約の数2（予算制約とCPA制約），広告枠の数だけ変数あり
+	    LpSolve solver = LpSolve.makeLp(2, adSpaceNum);
+	    solver.setOutputfile("debug");
+
+	    // 上限と下限をセット
+	    for (int i = 0; i < adSpaceNum; i++) {
+		int lowerLimit = previousImps[i] - quota;
+		int upperLimit = previousImps[i] + quota;
+		if (lowerLimit < 0) {
+		    lowerLimit = 0;
+		}
+		// 変数は1始まり
+		solver.setBounds(i + 1, lowerLimit, upperLimit);
+	    }
+
+	    // 予算制約
+	    int[] colno = new int[adSpaceNum];
+	    double[] row = new double[adSpaceNum];
+
+	    for (int i = 0; i < adSpaceNum; i++) {
+		colno[i] = i + 1;
+		row[i] = prices.get(i);
+	    }
+	    solver.addConstraintex(adSpaceNum, row, colno, LpSolve.LE, budget);
+
+	    // CPA制約
+	    for (int i = 0; i < adSpaceNum; i++) {
+		colno[i] = i + 1;
+		if (icvr.get(i) != 1) {
+		    row[i] = prices.get(i) - cpa * icvr.get(i);
+		} else {
+		    row[i] = 0;
+		}
+	    }
+	    solver.addConstraintex(adSpaceNum, row, colno, LpSolve.LE, 0);
+
+	    // 目的設定
+	    for (int i = 0; i < adSpaceNum; i++) {
+		colno[i] = i + 1;
+		row[i] = 1;
+	    }
+	    solver.setObjFnex(adSpaceNum, row, colno);
+
+	    // 問題解く
+	    solver.setMaxim();
+	    int ret = solver.solve();
+	    if (ret == LpSolve.OPTIMAL) {
+		// System.out.println("Solved");
+	    } else {
+		System.out.println("NOT SOLVED: " + ret);
+	    }
+
+	    // インプレッション総数と各枠でのインプレッション数をGET
+	    // System.out.println("Objective value: " + solver.getObjective());
+	    double[] var = solver.getPtrVariables();
+	    for (int i = 0; i < var.length; i++) {
+		imps.add((int)var[i]);
+	    }
+
+	    // メモリの開放
+	    if (solver.getLp() != 0) {
+		solver.deleteLp();
+	    }
+	} catch (LpSolveException e) {
+	    e.printStackTrace();
+	}
+	return imps;
+    }
+}

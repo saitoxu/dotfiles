@@ -66,10 +66,10 @@
   (setq locale-coding-system 'utf-8-hfs))
 
 ;; 行番号表示
-(global-linum-mode t)
-(set-face-attribute 'linum nil
-                    :foreground "#888"
-                    :height 0.9)
+; (global-linum-mode t)
+; (set-face-attribute 'linum nil
+                    ; :foreground "#888"
+                    ; :height 0.9)
 
 ;; 行番号フォーマット
 (setq linum-format "%4d")
@@ -105,6 +105,9 @@
 
 ;; 最近使ったファイルをメニューに表示
 (recentf-mode t)
+
+;; recentf更新しない
+; (setq recentf-auto-cleanup 'never)
 
 ;; 最近使ったファイルの表示数
 (setq recentf-max-menu-items 10)
@@ -201,13 +204,14 @@
   ;; install-elispの関数を利用可能にする
   ; (auto-install-compatibility-setup))
 
-;; 10秒で終了しなかったらauto-installをあきらめる
+;; 5秒で終了しなかったらauto-installをあきらめる
 ;; プロキシの影響でemacs起動しないのを防ぐため
-(with-timeout (10 nil)
-  (when (require 'auto-install nil t)
-    (setq auto-install-directory "~/.emacs.d/elisp/")
-    (auto-install-update-emacswiki-package-name t)
-    (auto-install-compatibility-setup)))
+;; 意味なかったorz
+; (with-timeout (5 nil)
+  ; (when (require 'auto-install nil t)
+    ; (setq auto-install-directory "~/.emacs.d/elisp/")
+    ; (auto-install-update-emacswiki-package-name t)
+    ; (auto-install-compatibility-setup)))
 
 ;; redo+の設定
  (when (require 'redo+ nil t)
@@ -257,3 +261,47 @@
 (setq vc-follow-symlinks t)
 ;; シンボリックリンク先のVCS内で更新が入った場合にバッファを自動更新
 (setq auto-revert-check-vc-info t)
+
+;; auto-completeの設定
+(when (require 'auto-complete-config nil t)
+  (add-to-list 'ac-dictionary-directories
+               "~/.emacs.d/elisp/ac-dict")
+  (define-key ac-mode-map (kbd "M-TAB") 'auto-complete)
+  (ac-config-default))
+
+;; color-moccurの設定
+(when (require 'color-moccur nil t)
+  ;; M-oにoccur-by-moccurを割り当て
+  (define-key global-map (kbd "M-o") 'occur-by-moccur)
+  ;; スペース区切りでAND検索
+  (setq moccur-split-word t)
+  ;; ディレクトリ検索のとき除外するファイル
+  (add-to-list 'dmoccur-exclusion-mask "\\.DS_Store")
+  (add-to-list 'dmoccur-exclusion-mask "^#.+#$")
+  ;; Migemoを利用できる環境であればMigemoを使う
+  (when (and (executable-find "cmigemo")
+             (require 'migemo nil t))
+    (setq moccur-use-migemo t)))
+
+;; moccur-editの設定
+(require 'moccur-edit nil t)
+
+;; moccur-edit-finish-editと同時にファイルを保存する
+; (defadvice moccur-edit-change-file
+  ; (after save-after-moccur-edit-buffer activate)
+  ; (save-buffer))
+
+;; wgrepの設定
+;; ダウンロードしてない
+; (require 'wgrep nil t)
+
+;; undo-treeの設定
+(when (require 'undo-tree nil t)
+  (global-undo-tree-mode))
+
+;; cua-modeの設定
+(cua-mode t) ; cua-modeをオン
+(setq cua-enable-cua-keys nil) ; CUAキーバインドを無効にする
+
+;; server start for emacs-client
+; (server-start)

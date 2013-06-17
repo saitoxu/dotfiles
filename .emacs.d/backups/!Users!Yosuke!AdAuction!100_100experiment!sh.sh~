@@ -1,0 +1,8 @@
+#!/bin/sh
+while IFS=| read media_info path_id count
+do
+    echo $media_info
+    echo $path_id
+    echo $count
+    echo ''
+done < avg_bid100.sql

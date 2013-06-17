@@ -8,8 +8,8 @@ Host greenwhale
      Port 22
      User adauction
      # PreferredAuthentications password
-     IdentityFile ~/.ssh/whale_id_rsa
-     IdentitiesOnly yes
+     # IdentityFile ~/.ssh/whale_id_rsa
+     # IdentitiesOnly yes
 Host whitewhale
      HostName 10.229.59.224
      Port 22
@@ -27,3 +27,8 @@ Host sakura
      Port 1202
      Hostname 133.242.155.124
      IdentityFile ~/.ssh/sakura_id_rsa
+Host com
+     User komura
+     Port 1202
+     Hostname 133.242.155.124
+     IdentityFile ~/.ssh/com_id_rsa

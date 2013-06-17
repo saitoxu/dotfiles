@@ -1,0 +1,223 @@
+package adauction.simulator;
+
+import java.io.*;
+import java.util.*;
+import jp.sf.orangesignal.csv.*;
+import jp.sf.orangesignal.csv.handlers.*;
+
+public class FileReader {
+    // TODO ここもファイル名直接指定をcsvからにする
+    private static final String metaUri = "/home/adauction/workspace/AdAuction/res";
+    private static final String curveUri = "/adspaces/20130610/";
+    private static final String curveTailUri = ".csv";
+    private static final String structUri = metaUri + "/structs.csv";
+    private static final String initializationUri = metaUri + "/initialization.csv";
+    private static final String icvrUri = metaUri + "/icvr.csv";
+
+    // 引数で指定されたSTRUCTの一日の予算を返す
+    // STRUCTが使った広告枠で使用した予算の和を計算して返す
+    public static double readBudget(int _struct, ArrayList<Integer> adSpaceNum) {
+	double budget = 0.0;
+	try {
+	    CsvConfig cfg = new CsvConfig();
+	    cfg.setIgnoreEmptyLines(true);
+	    List<String[]> tempList = Csv.load(new File(initializationUri),
+					       cfg, new StringArrayListHandler());
+	    for (String[] strArray : tempList) {
+		if (Integer.parseInt(strArray[0]) == _struct
+		    && adSpaceNum.contains(Integer.parseInt(strArray[1]))) {
+		    budget += Double.parseDouble(strArray[3]);
+		}
+	    }
+	    return budget;
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	return 0.0;
+    }
+
+    // 引数で指定されたSTRUCTのCPAを返す
+    public static double readCpa(int _struct) {
+	try {
+	    CsvConfig cfg = new CsvConfig();
+	    cfg.setIgnoreEmptyLines(true);
+	    List<String[]> tempList = Csv.load(new File(structUri), cfg,
+					       new StringArrayListHandler());
+	    for (String[] strArray : tempList) {
+		if (Integer.parseInt(strArray[0]) == _struct) {
+		    return Double.parseDouble(strArray[2]);
+		}
+	    }
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	return 0.0;
+    }
+
+    // 引数で指定されたSTRUCTのicvrを返す
+    public static ArrayList<Double> readIcvr(int _struct, ArrayList<Integer> adSpaceNum) {
+        ArrayList<Double> icvr = new ArrayList<Double>();
+        try {
+            CsvConfig cfg = new CsvConfig();
+            cfg.setIgnoreEmptyLines(true);
+            List<String[]> tempList = Csv.load(new File(icvrUri), cfg,
+                                               new StringArrayListHandler());
+            for (int _adSpaceNum : adSpaceNum) {
+                for (String[] strArray : tempList) {
+                    if (Integer.parseInt(strArray[0]) == _struct
+                        && Integer.parseInt(strArray[1]) == _adSpaceNum) {
+                        icvr.add(Double.parseDouble(strArray[2]));
+                        // hoge
+                        System.out.println("icvr foo: " + icvr.get(icvr.size() - 1));
+                    }
+                }
+            }
+            return icvr;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    // 引数で指定された広告枠の入札額-インプレッション曲線を返す
+    public static ArrayList<Value> readCurveFile(int adSpace, int otherSum) {
+	ArrayList<Value> curve = new ArrayList<Value>();
+	int tempSum = 0;
+
+	try {
+	    CsvConfig cfg = new CsvConfig();
+	    cfg.setIgnoreEmptyLines(true);
+	    List<String[]> tempList = Csv.load(new File(metaUri + curveUri
+							+ adSpace + curveTailUri), cfg,
+					       new StringArrayListHandler());
+
+	    int i;
+	    for (i = 0; i < tempList.size(); i++) {
+		tempSum += Integer.parseInt(tempList.get(i)[1]);
+		if (tempSum > otherSum) {
+		    tempSum -= otherSum;
+		    break;
+		}
+	    }
+
+	    curve.add(new Value(Double.parseDouble(tempList.get(i)[0]), tempSum));
+	    for (int j = i + 1; j < tempList.size(); j++) {
+		curve.add(new Value(Double.parseDouble(tempList.get(j)[0]),
+				    Integer.parseInt(tempList.get(j)[1])));
+	    }
+
+	    return curve;
+	} catch (IOException e) {
+	    e.printStackTrace();
+	}
+	return null;
+    }
+
+    // 他の広告枠が実際に獲得したインプレッションの総数
+    public static int readOtherSum(int adSpaceNum, ArrayList<Integer> structNum) {
+        int sum = 0;
+        try {
+            CsvConfig cfg = new CsvConfig();
+            cfg.setIgnoreEmptyLines(true);
+            List<String[]> tempList = Csv.load(new File(initializationUri),
+                                               cfg, new StringArrayListHandler());
+            for (String[] strArray : tempList) {
+                if (Integer.parseInt(strArray[0]) == 0
+                    && Integer.parseInt(strArray[1]) == adSpaceNum) {
+                    sum += Integer.parseInt(strArray[2]);
+                }
+                if (structNum.contains(Integer.parseInt(strArray[0]))
+                    && Integer.parseInt(strArray[1]) == adSpaceNum) {
+                    sum -= Integer.parseInt(strArray[2]);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return sum;
+    }
+
+    // 広告枠を指定された数だけランダムに選択
+    // 100以下
+    // 100とかやったら何回もループ回って非効率やなあ
+    // 50より大きい数なら逆に減らすとか
+    // というわけで実装した
+    public static ArrayList<Integer> selectAdSpaces(int num) {
+        ArrayList<Integer> adSpaceNum = new ArrayList<Integer>();
+        Random rnd = new Random();
+        int adSpace = 0;
+
+        if (num > 100) {
+            System.err.println("Too many ad spaces.");
+            System.exit(-1);
+        } else if (num <= 50) {
+            while (adSpaceNum.size() < num) {
+                adSpace = rnd.nextInt(100) + 1;
+                if (!adSpaceNum.contains(adSpace)) {
+                    adSpaceNum.add(adSpace);
+                }
+            }
+        } else {
+            for (int i = 0; i < 100; i++) {
+                adSpaceNum.add(i + 1);
+            }
+            while (adSpaceNum.size() > num) {
+                adSpace = rnd.nextInt(100) + 1;
+                if (adSpaceNum.contains(adSpace)) {
+                    adSpaceNum.remove(adSpaceNum.indexOf(adSpace));
+                }
+            }
+        }
+
+        Collections.sort(adSpaceNum);
+
+        return adSpaceNum;
+    }
+
+    // STRUCTをランダムに選択
+    // 必ず広告枠が決まってから，広告枠の数以下
+    // 広告枠に合わせて予算が0にならないようにSTRUCTを選択する
+    public static ArrayList<Integer> selectStructs(int num, ArrayList<Integer> adSpaceNum) {
+        ArrayList<Integer> structNum = new ArrayList<Integer>();
+        ArrayList<Double> Budget = new ArrayList<Double>();
+        Random rnd = new Random();
+        int struct = 0;
+
+        // 広告枠を先にセットしてなかったらアウト
+        if (adSpaceNum.size() == 0) {
+            System.err.println("The number of ad spaces is 0.");
+            System.exit(-1);
+        }
+        // 広告枠の数よりSTRUCTが多かったらアウト
+        if (num > adSpaceNum.size()) {
+            System.err.println("Too many structs.");
+            System.exit(-1);
+        }
+
+        // STRUCTをランダムに選択
+        // 予算を調べて，0だったらSTRUCT追加しない
+        if (num <= 50) {
+            while (structNum.size() < num) {
+                struct = rnd.nextInt(100) + 1;
+                if (!structNum.contains(struct) && readBudget(struct, adSpaceNum) != 0.0) {
+                    structNum.add(struct);
+                }
+            }
+        } else {
+            for (int i = 0; i < 100; i++) {
+                structNum.add(i + 1);
+            }
+            while (structNum.size() > num) {
+                struct = rnd.nextInt(100) + 1;
+                System.out.println(structNum);
+                if (structNum.contains(struct) && readBudget(struct, adSpaceNum) == 0.0) {
+                    structNum.remove(structNum.indexOf(struct));
+                }
+            }
+        }
+
+        Collections.sort(structNum);
+
+        return structNum;
+    }
+}

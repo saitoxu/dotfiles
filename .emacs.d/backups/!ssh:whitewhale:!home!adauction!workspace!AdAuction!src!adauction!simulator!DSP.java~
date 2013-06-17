@@ -1,0 +1,151 @@
+package adauction.simulator;
+
+import java.util.ArrayList;
+
+public class DSP {
+    private static final int quota = 1000000; // 変動量の上限値
+
+    public static void main(String[] args) {
+        // シミュレーションに使用するSTRUCTと広告枠
+        // 現在は直接編集しなければならない
+        // TODO csvファイルに書き込み，それを読み込んで実行するようにする
+        ArrayList<Integer> structNum = new ArrayList<Integer>();
+        ArrayList<Integer> adSpaceNum = new ArrayList<Integer>();
+        ArrayList<Struct> struct = new ArrayList<Struct>();
+        ArrayList<AdSpace> adSpace = new ArrayList<AdSpace>();
+        // DSPは各広告枠の現在の価格を把握している
+        ArrayList<Double> currentPrices = new ArrayList<Double>();
+        // 同じく各広告枠の入札額とインプレッションの関係も知っている
+        ArrayList<ArrayList<Value>> curves = new ArrayList<ArrayList<Value>>();
+        // シミュレーションに参加していないSTRUCTが各広告枠で獲得したインプレッション数の和
+        ArrayList<Integer> otherSum = new ArrayList<Integer>();
+
+        // 広告枠をランダムに選択
+        adSpaceNum = FileReader.selectAdSpaces(Integer.parseInt(args[1]));
+        // STRUCTをランダムに選択
+        // 広告枠に合わせて予算が0にならないようにする
+        // 必ず広告枠を先に決める
+        structNum = FileReader.selectStructs(Integer.parseInt(args[0]), adSpaceNum);
+
+        System.out.print("STRUCT: ");
+        System.out.println(structNum);
+        System.out.print("AD SPACE: ");
+        System.out.println(adSpaceNum);
+
+        // structNum.add(1);
+        // structNum.add(2);
+        // structNum.add(3);
+
+        // adSpaceNum.add(1);
+        // adSpaceNum.add(2);
+        // adSpaceNum.add(3);
+
+        // STRUCTの初期化
+        for (int _struct : structNum) {
+            // System.out.println(FileReader.readBudget(_struct, adSpaceNum));
+            struct.add(new Struct(FileReader.readBudget(_struct, adSpaceNum),
+                                  FileReader.readCpa(_struct), FileReader.readIcvr(_struct,
+                                                                                   adSpaceNum)));
+        }
+
+        // 他のSTRUCTのインプレッション数の和を計算
+        for (int _adSpaceNum : adSpaceNum) {
+            otherSum.add(FileReader.readOtherSum(_adSpaceNum, structNum));
+        }
+
+        // 価格をならした場合
+        // int tempSum = 0;
+        // for (int _otherSum : otherSum) {
+        // tempSum += _otherSum;
+        // }
+        // otherSum.clear();
+        // otherSum.add(0);
+        // otherSum.add(tempSum);
+        // otherSum.add(0);
+
+        // 広告枠の初期化
+        for (int i = 0; i < adSpaceNum.size(); i++) {
+            // hoge
+            // System.out.println("hoge: " + otherSum.get(i));
+            adSpace.add(new AdSpace(FileReader.readCurveFile(adSpaceNum.get(i),
+                                                             otherSum.get(i))));
+        }
+
+        // 各広告枠の入札額とインプレッションの関係をSET + 初期価格の周知
+        for (AdSpace _adSpace : adSpace) {
+            curves.add(_adSpace.getCurve());
+            currentPrices.add(_adSpace.getCurrentPrice());
+        }
+
+        int[][] imps = new int[struct.size()][adSpace.size()];
+
+        // 初期化
+        for (int[] imp : imps) {
+            for (int j : imp) {
+                imp[j] = 0;
+            }
+        }
+
+        // ループに入るまでどれくらい時間かかる？
+        // System.exit(0);
+
+        for (int k = 0; k < 1000; k++) {
+            for (int i = 0; i < struct.size(); i++) {
+                ArrayList<Integer> temp = struct.get(i).getDemandOnPrice(quota,
+                                                                         imps[i], currentPrices);
+                for (int j = 0; j < temp.size(); j++) {
+                    imps[i][j] = temp.get(j);
+                }
+            }
+            System.out.println("------------Waku------------");
+            for (int[] imp : imps) {
+                for (int _imp : imp) {
+                    System.out.printf("%8d", _imp);
+                }
+                System.out.println();
+            }
+
+            System.out.println("-----------Kakaku-----------");
+            // 価格を更新
+            currentPrices = updatePrices(adSpace, currentPrices, imps);
+            // 価格を表示
+            System.out.println(currentPrices);
+            // 何番目の価格かを表示
+            for (int i = 0; i < currentPrices.size(); i++) {
+                for (int j = 0; j < curves.get(i).size(); j++) {
+                    if (curves.get(i).get(j).getBid() == currentPrices.get(i)) {
+                        System.out.printf("%8d", j);
+                    }
+                }
+            }
+            System.out.println();
+
+            System.out.println();
+
+            // TODO 収束の判断はどうする？
+        }
+        System.out.println("SUCCESS");
+    }
+
+    // 価格を更新する
+    private static ArrayList<Double> updatePrices(ArrayList<AdSpace> adSpace,
+                                                  ArrayList<Double> currentPrices, int[][] imps) {
+        ArrayList<Double> nextPrices = new ArrayList<Double>();
+        ArrayList<Integer> sum = new ArrayList<Integer>();
+
+        for (int i = 0; i < imps[0].length; i++) {
+            int temp = 0;
+            for (int j = 0; j < imps.length; j++) {
+                temp += imps[j][i];
+            }
+            sum.add(temp);
+        }
+
+        for (int i = 0; i < adSpace.size(); i++) {
+            nextPrices.add(adSpace.get(i).getNextPrice(currentPrices.get(i),
+                                                       sum.get(i)));
+        }
+
+        return nextPrices;
+    }
+}
