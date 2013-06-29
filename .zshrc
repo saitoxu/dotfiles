@@ -7,11 +7,14 @@ compctl -M 'm:{a-z}={A-Z}'
 #
 alias ls='ls -GF'
 alias la='ls -a'
-alias ll='ls -l'
-alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
+alias ll='ls -al'
 alias javac='javac -J-Dfile.encoding=UTF-8'
 alias java='java -Dfile.encoding=UTF-8'
 alias firefox='/Applications/Firefox.app/Contents/MacOS/firefox'
+alias ec='emacsclient -n'
+alias valgrind='/usr/local/Cellar/valgrind/3.8.1/bin/valgrind'
+## 要らなくなった勢
+# alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
 # alias ruby='/opt/local/bin/ruby1.9'
 
 ## Default shell configuration

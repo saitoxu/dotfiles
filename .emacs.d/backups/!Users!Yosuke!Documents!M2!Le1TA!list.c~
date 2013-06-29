@@ -1,0 +1,115 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX_N 9999 //最大の自然数
+#define MAX_INPUT 10 //最初に入力する数
+
+struct listelem {
+  int data;
+  struct listelem *next;
+};
+
+struct listelem* add(int data,struct listelem *l){ //リストを前から追加
+  struct listelem *tmp;
+  tmp = (struct listelem *)malloc(sizeof(struct listelem));
+  tmp->data = data;
+  tmp->next = l;
+  return tmp;
+}
+
+struct listelem* insert(int data,struct listelem *l){ //リストに挿入
+  struct listelem *tmp;
+  tmp = (struct listelem *)malloc(sizeof(struct listelem));
+  tmp->data = data;
+  if(l->data >= data){ //最初に挿入することになる場合
+    tmp->next = l;
+    return tmp;
+  }
+  else{ //2番め以降に挿入する場合
+    struct listelem *p = l;
+    struct listelem *q = l; //qはpの一つ前の箱
+    while(p != NULL && p->data < data){
+      q = p;
+      p = p->next;
+    }
+    tmp->next = p;
+    q->next = tmp;
+    return l;
+  }
+}
+
+struct listelem* delete(int data,struct listelem *l){ //リストにあるdataの数字を削除する
+  struct listelem *p = l;
+  struct listelem *q = l; //pの一つ前の箱のポインタ
+  while(p->data == data){ //最初の数字が消すことになる限り、消しつづける
+    p = p->next;
+  }
+  l = p;
+  q = p;
+  while(p != NULL){
+    if(p->data == data){
+      q->next = p->next; //一つ前の箱のnextを一つ飛ばするよう書き換える
+    }else{
+      q = p; //qはpの一つ前
+    }
+    p = p->next; //次のp
+  }
+  return l;
+}
+
+void print_list(struct listelem *l) { //リストを表示
+  while (l != NULL) {
+    printf("%d ", l->data);
+    l = l->next;
+  }
+  printf("\n");
+}
+
+void input1(int *array){ //10個の数字を入力してもらう
+  char str[100];
+  int i = 0;
+  int max_n = MAX_N;
+  while(i<MAX_INPUT){
+    fgets(str,sizeof(str),stdin); //キーボードからstrに入力
+    sscanf(str,"%d\n",&array[i]); //strからarrayに入力
+    if(array[i] <= 0 || array[i] >= (MAX_N + 1)){
+      printf("1～%dの数字しか入力できません\n",max_n);
+      i--; //プラマイ0でもう一度入力させる
+    }
+    i++;
+  }
+}
+
+void input2(int *a){ //挿入、削除する際1個の数字を入力してもらう
+  char str[100];
+  fgets(str,sizeof(str),stdin);
+  sscanf(str,"%d\n",a);
+}
+
+int main(){
+  struct listelem *l = NULL;
+  int max_n = MAX_N;
+  printf("1以上%d以下の自然数を10個入力してください\n",max_n);
+  int array[MAX_INPUT];
+  input1(array);
+  int i;
+  for(i = MAX_INPUT-1;i >= 0;i--){ //リストを前からaddするようになってるので順番逆にする
+    l = add(array[i],l);
+  }
+  printf("入力された自然数:\n");
+  print_list(l);
+  printf("挿入する自然数を%d個入力してください\n",max_n);
+  int a;
+  for(i = 0;i < MAX_INPUT;i++){
+    input2(&a);
+    l = insert(a,l); //1回1回挿入、表示
+    print_list(l);
+  }
+  printf("削除する自然数を%d個入力してください\n",max_n);
+  int b;
+  for(i = 0;i < MAX_INPUT;i++){
+    input2(&b);
+    l =  delete(b,l); //1回1回削除、表示
+    print_list(l);
+  }
+  return 0;
+}

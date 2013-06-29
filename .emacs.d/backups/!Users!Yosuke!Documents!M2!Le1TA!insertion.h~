@@ -1,0 +1,13 @@
+#include <stdbool.h>
+
+struct listelem {
+  int data;
+  struct listelem *next;
+} listelem;
+
+int input_numbers(struct listelem *elem);
+void print_list(struct listelem *elem);
+struct listelem * wait_command(struct listelem *elem);
+struct listelem * insert_item(int number, struct listelem *elem);
+struct listelem * delete_item(int number, struct listelem *elem);
+bool validate_number(int number);

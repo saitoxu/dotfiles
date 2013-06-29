@@ -1,0 +1,8 @@
+i=1
+echo "use adauction;"
+while IFS="," read media_info path_id b w distance
+do
+    str="select min(winning_bid) from impression_log_20120629_with_ad_space where media_info = \"${media_info}\" and path_id = ${path_id};"
+    echo $str
+    i=`expr $i + 1`
+done < avg_distance.csv > get_min_winning_bids.sql

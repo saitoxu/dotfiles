@@ -68,7 +68,7 @@ public class FileReader {
                         && Integer.parseInt(strArray[1]) == _adSpaceNum) {
                         icvr.add(Double.parseDouble(strArray[2]));
                         // hoge
-                        System.out.println("icvr foo: " + icvr.get(icvr.size() - 1));
+                        // System.out.println("icvr foo: " + icvr.get(icvr.size() - 1));
                     }
                 }
             }
@@ -194,30 +194,47 @@ public class FileReader {
             System.exit(-1);
         }
 
-        // STRUCTをランダムに選択
         // 予算を調べて，0だったらSTRUCT追加しない
-        if (num <= 50) {
-            while (structNum.size() < num) {
-                struct = rnd.nextInt(100) + 1;
-                if (!structNum.contains(struct) && readBudget(struct, adSpaceNum) != 0.0) {
-                    structNum.add(struct);
-                }
-            }
-        } else {
-            for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 100; i++) {
+            struct = i + 1;
+            if (readBudget(struct, adSpaceNum) != 0) {
                 structNum.add(i + 1);
             }
-            while (structNum.size() > num) {
-                struct = rnd.nextInt(100) + 1;
-                System.out.println(structNum);
-                if (structNum.contains(struct) && readBudget(struct, adSpaceNum) == 0.0) {
-                    structNum.remove(structNum.indexOf(struct));
-                }
-            }
+        }
+        // 予算が0じゃないSTRUCTが揃ってる
+        // そこからランダムに削除
+        while (structNum.size() > num) {
+            structNum.remove(rnd.nextInt(structNum.size()));
         }
 
         Collections.sort(structNum);
 
         return structNum;
+    }
+
+    // 各STRUCTが各広告枠で実際に獲得したインプレッション数を計算して返す
+    public static ArrayList<ArrayList<Integer>> getRealImpressions(ArrayList<Integer> structNum, ArrayList<Integer> adSpaceNum) {
+        ArrayList<ArrayList<Integer>> realImps = new ArrayList<ArrayList<Integer>>();
+
+        try {
+            CsvConfig cfg = new CsvConfig();
+            cfg.setIgnoreEmptyLines(true);
+            List<String[]> tempList = Csv.load(new File(initializationUri),
+                                               cfg, new StringArrayListHandler());
+            for (int struct : structNum) {
+                realImps.add(new ArrayList<Integer>());
+                for (int adSpace : adSpaceNum) {
+                    for (String[] strArray : tempList) {
+                        if (struct == Integer.parseInt(strArray[0])
+                            && adSpace == Integer.parseInt(strArray[1])) {
+                            realImps.get(realImps.size() - 1).add(Integer.parseInt(strArray[2]));
+                        }
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return realImps;
     }
 }

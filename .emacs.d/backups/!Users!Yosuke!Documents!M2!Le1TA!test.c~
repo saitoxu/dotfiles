@@ -1,0 +1,18 @@
+#include <stdlib.h>
+
+int main( void )
+{
+  char* p1 = (char*)NULL;
+  char* p2 = (char*)NULL;
+
+  p1 = (char*)malloc( 10 );
+  p2 = (char*)malloc( 18 );
+
+  free( (void*)p1 );
+  p1 = (char*)NULL;
+
+  // free( (void*)p2 );
+  p2 = (char*)NULL;
+
+  return 0;
+}

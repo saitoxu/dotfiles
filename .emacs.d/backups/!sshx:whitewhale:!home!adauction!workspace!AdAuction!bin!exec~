@@ -1,0 +1,6 @@
+cp=".:../../jar/orangesignal-csv-1.3.1.jar:../../jar/jlha-0.06-05.jar:../../jar/lpsolve55j.jar"
+target="adauction/simulator/DSP"
+java -cp $cp $target $1 $2
+if [ -e debug ]; then
+   rm debug
+fi

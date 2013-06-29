@@ -68,27 +68,11 @@ public class DSP {
         }
 
         for (int k = 0; k < 100000; k++) {
-            System.out.println("No." + k);
-            // System.out.println("-----------Kakaku-----------");
+            System.out.println("No." + (k + 1));
             // 価格を表示
             System.out.println(currentPrices);
             // 現在の価格を過去の価格系列に追加
             pastPrices = addPrices(pastPrices, currentPrices);
-            // テスト
-            // System.out.println("---------" + k + "---------");
-            // for (ArrayList<Double> pastPrice : pastPrices) {
-            // System.out.println(pastPrice);
-            // }
-
-            // 何番目の価格かを表示
-            // for (int i = 0; i < currentPrices.size(); i++) {
-            // for (int j = 0; j < curves.get(i).size(); j++) {
-            // if (curves.get(i).get(j).getBid() == currentPrices.get(i)) {
-            // System.out.printf("%8d", j);
-            // }
-            // }
-            // }
-            // System.out.println();
 
             for (int i = 0; i < struct.size(); i++) {
                 ArrayList<Integer> temp = struct.get(i).getDemandOnPrice(quota,
@@ -120,11 +104,49 @@ public class DSP {
         System.out.println(structNum); // STRUCT表示
         System.out.println(adSpaceNum); // 広告枠表示
 
+        System.out.printf("\n--- the number of impressions in simulation ---\n");
+        for (int[] imp : imps) {
+            for (int _imp : imp) {
+                // System.out.print(_imp + ",");
+                System.out.printf("%7d", _imp);
+            }
+            System.out.println();
+        }
+
         // 実際のインプレッション数を計算して表示する
+        System.out.printf("\n--- the number of impressions in real ---\n");
         ArrayList<ArrayList<Integer>> realImps = FileReader.getRealImpressions(structNum, adSpaceNum);
         for (ArrayList<Integer> _imps : realImps) {
             for (int _imp : _imps) {
                 System.out.printf("%7d", _imp);
+            }
+            System.out.println();
+        }
+
+        System.out.println();
+
+        System.out.printf("\n--- the number of conversions in simulation ---\n");
+        for (int _i = 0; _i < struct.size(); _i++) {
+            for (int _j = 0; _j < adSpace.size(); _j++) {
+                // 1000倍表示にして見やすく
+                // icvrがない場合は表示しない
+                if (struct.get(_i).getIcvr().get(_j) != 1) {
+                    System.out.printf("%7d", (int)(imps[_i][_j] * struct.get(_i).getIcvr().get(_j) * 1000));
+                } else {
+                    System.out.printf("      -");
+                }
+            }
+            System.out.println();
+        }
+
+        System.out.printf("\n--- the number of conversions in real ---\n");
+        for (int _i = 0; _i < struct.size(); _i++) {
+            for (int _j = 0; _j < adSpace.size(); _j++) {
+                if (struct.get(_i).getIcvr().get(_j) != 1) {
+                    System.out.printf("%7d", (int)(realImps.get(_i).get(_j) * struct.get(_i).getIcvr().get(_j) * 1000));
+                } else {
+                    System.out.printf("      -");
+                }
             }
             System.out.println();
         }

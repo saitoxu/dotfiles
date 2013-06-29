@@ -1,93 +1,148 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#define MAX 256
-#define QUANTITY 50
-#define INPUT_MIN 1
-#define INPUT_MAX 9999
 
-void init(int x[]);
-int input(int x[], char a[]);
-void bubble_sort(int x[], int d);
-void output(int x[], int a);
-int main()
+
+struct listelem {
+  int data;
+  struct listelem *next;
+};
+
+typedef struct listelem list;
+
+struct listelem *add(int x, struct listelem *l);
+struct listelem *insert(int x, struct listelem *l);
+struct listelem *delete(int x, struct listelem *l);
+void print_list(struct listelem *l);
+
+
+
+int main(void)
 {
+  list *l;
 
-  int x[MAX], k;
-  char a[MAX];
+  l = NULL;
+  int data = 0;
+  int i;
 
-  init(x);
+  // printf("1以上9999以下の自然数を10回入力してください\n");
 
-  k = input(x, a);
+  for(i=0;i<10;i++) {
+    scanf("%d",&data);
+    l = add(data, l);
+  }
 
-  bubble_sort(x, k);
+  print_list(l);
 
-  printf("ソート結果を表示します\n\n");
+  // printf("Insertを開始します。1以上9999以下の自然数を10回入力してください。\n");
 
-  output(x, k);
+  for(i=0;i<10;i++) {
+    scanf("%d",&data);
+    l = insert(data, l);
+    print_list(l);
+  }
+
+
+
+  // printf("Deleteを開始します。1以上9999以下の自然数を10回入力してください\n");
+
+  for(i=0;i<10;i++) {
+    scanf("%d",&data);
+    l = delete(data, l);
+    print_list(l);
+  }
 
   return 0;
-
 }
 
-//初期化処理
-void init(int x[]){
-  int i=0;
-  for(i=0;i<QUANTITY;i++){
-    x[i] = 0;
+
+struct listelem *add(int data, struct listelem *l)
+{
+  struct listelem *p;
+
+  if ((p = (struct listelem *) malloc(sizeof(struct listelem))) == NULL) {
+    printf("malloc error\n");
+    exit(EXIT_FAILURE);
   }
+
+  p->data = data;
+  p->next = l;
+  l = p;
+
+  return l;
+
 }
 
-//入力処理
-int input(int x[], char a[]){
-  int i=0, b=0, c=0;
-  char d[MAX];
-  printf("-1を入力すると途中でソーティングに移ります\n");
-  for(i=0;i<QUANTITY;i++){
-    printf("自然数を入力してください（ただし1から9999までの間）\n");
-    fgets(a,MAX,stdin);
-    b = atoi(a);
-    c = sprintf(d,"%d",b);
-    if(strlen(a) - 1 == c){
-      if(b >= INPUT_MIN && b <= INPUT_MAX){
-        x[i] = b;
-      }else if(b == -1){
-        printf("入力を終了します\n");
-        break;
-      }else{
-        printf("入力が不正です\n");
-        i--;
-      }
-    }else{
-      printf("入力が不正です\n");
-      i--;
-    }
+
+struct listelem *insert(int x, struct listelem *l)
+{
+  struct listelem *p,*q,*head;
+
+  if ((p = (struct listelem *) malloc(sizeof(struct listelem))) == NULL) {
+    printf("malloc error\n");
+    exit(EXIT_FAILURE);
   }
-  return --i;
-}
 
-//ソーティングそのもの
-void bubble_sort(int x[], int d){
-  int a, b, c;
-  for(a=0;a<d;a++){
-    for(b=0;b<d;b++){
-      if(x[b] > x[b+1]){
-        c = x[b];
-        x[b] = x[b+1];
-        x[b+1] = c;
-      }
-    }
+  if ((q = (struct listelem *) malloc(sizeof(struct listelem))) == NULL) {
+    printf("malloc error\n");
+    exit(EXIT_FAILURE);
   }
+
+  if ((head = (struct listelem *) malloc(sizeof(struct listelem))) == NULL) {
+    printf("malloc error\n");
+    exit(EXIT_FAILURE);
+  }
+
+  head = l;
+  q = l->next;
+  while(q !=NULL){
+    if(q->data >= x){
+      p->next = l->next;
+      p->data = x;
+      l->next = p;
+      break;
+    }
+    l = l->next;
+    q = q->next;
+  }
+
+  if(q == NULL){
+    p->next = NULL;
+    p->data = x;
+    l->next = p;
+  }
+
+  return head;
 }
 
-//出力処理
-void output(int x[], int a){
-  int i;
-  for(i=0;i<a+1;i++){
-    printf("%5d",x[i]);
-    if(i%10 == 9){
-      printf("\n");
+
+struct listelem *delete(int x, struct listelem *l)
+{
+  struct listelem* p, *q, *r, *head;
+
+  p = head = NULL;
+  q = l;
+  while (q!=NULL) {
+    r = q->next;
+    if (q->data == x) {
+      free(q);
+      if (p != NULL) p->next = r;
+    } else {
+      if (head == NULL) head = q;
+      p = q;
     }
+    q = r;
+  }
+
+  return head;
+
+}
+
+
+void print_list(struct listelem *l)
+{
+  while (l != NULL) {
+    printf("%d ", l->data);
+    l = l->next;
   }
   printf("\n");
 }
