@@ -8,8 +8,8 @@ compctl -M 'm:{a-z}={A-Z}'
 alias ls='ls -GF'
 alias la='ls -a'
 alias ll='ls -al'
-alias javac='javac -J-Dfile.encoding=UTF-8'
-alias java='java -Dfile.encoding=UTF-8'
+# alias javac='javac -J-Dfile.encoding=UTF-8'
+# alias java='java -Dfile.encoding=UTF-8'
 alias firefox='/Applications/Firefox.app/Contents/MacOS/firefox'
 alias ec='emacsclient -n'
 alias valgrind='/usr/local/Cellar/valgrind/3.8.1/bin/valgrind'
@@ -64,8 +64,10 @@ esac
 export PATH=~/.rbenv/shims:$PATH
 eval "$(rbenv init -)"
 export PATH=$PATH:/Applications/android-sdk-macosx/platform-tools
+export PATH=$PATH:/opt/AWS-ElasticBeanstalk-CLI-2.5.1/eb/linux/python2.7
 export MANPATH=/opt/local/man:$MANPATH
 export TERM=xterm-256color
+export JAVA_HOME=/Library/Java/Home
 
 # MacPorts使ってた時代の遺物
 # export PATH=/opt/local/bin:/opt/local/sbin:$PATH
