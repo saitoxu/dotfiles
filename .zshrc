@@ -8,14 +8,12 @@ compctl -M 'm:{a-z}={A-Z}'
 alias ls='ls -GF'
 alias la='ls -a'
 alias ll='ls -al'
-# alias javac='javac -J-Dfile.encoding=UTF-8'
-# alias java='java -Dfile.encoding=UTF-8'
-alias firefox='/Applications/Firefox.app/Contents/MacOS/firefox'
-alias ec='emacsclient -n'
-alias valgrind='/usr/local/Cellar/valgrind/3.8.1/bin/valgrind'
-## 要らなくなった勢
-# alias emacs='/Applications/Emacs.app/Contents/MacOS/Emacs -nw'
-# alias ruby='/opt/local/bin/ruby1.9'
+alias javac='javac -J-Dfile.encoding=UTF-8'
+alias java='java -Dfile.encoding=UTF-8'
+# alias firefox='/Applications/Firefox.app/Contents/MacOS/firefox'
+# alias ec='emacsclient -n'
+# alias valgrind='/usr/local/Cellar/valgrind/3.8.1/bin/valgrind'
+# alias atom='atom -a'
 
 ## Default shell configuration
 #
@@ -61,25 +59,40 @@ esac
 #
 [ -f ~/.zshrc.mine ] && source ~/.zshrc.mine
 
+export MANPATH=/opt/local/man:$MANPATH
+export TERM=xterm-256color
+export JAVA_HOME=`/System/Library/Frameworks/JavaVM.framework/Versions/A/Commands/java_home -v "1.8"`
+
+### for postgresql
+export PGDATA=/usr/local/var/postgres
+
+export NVM_DIR="/Users/Yosuke/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
+# pyenv
+export PYENV_ROOT="${HOME}/.pyenv"
+export PATH="$PATH:${PYENV_ROOT}/bin"
+eval "$(pyenv init -)"
+
 export PATH=~/.rbenv/shims:$PATH
 eval "$(rbenv init -)"
 export PATH=$PATH:/Applications/android-sdk-macosx/platform-tools
-export PATH=$PATH:/opt/AWS-ElasticBeanstalk-CLI-2.5.1/eb/linux/python2.7
-export MANPATH=/opt/local/man:$MANPATH
-export TERM=xterm-256color
-export JAVA_HOME=/Library/Java/Home
+# export PATH=$PATH:/opt/AWS-ElasticBeanstalk-CLI-2.5.1/eb/linux/python2.7
+export PATH=$PATH:/usr/local/sbin
+# export PATH="/Applications/Sublime Text 2.app/Contents/SharedSupport/bin:$PATH"
 
-# MacPorts使ってた時代の遺物
-# export PATH=/opt/local/bin:/opt/local/sbin:$PATH
-
-# export PATH=$PATH:/Applications/XAMPP/xamppfiles/bin
-# export _JAVA_OPTIONS='-Dfile.encoding=UTF-8'
-# keychain ~/.ssh/github_id_rsa
-# set JAVA_HOME
-# JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/CurrentJDK/Home
-# export JAVA_HOME
-# PATH=$PATH:$JAVA_HOME/bin
-# export PATH
+PATH=${JAVA_HOME}/bin:${PATH}
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+# read .zsh files
+ZSHHOME="${HOME}/.zsh.d"
+
+if [ -d $ZSHHOME -a -r $ZSHHOME -a \
+     -x $ZSHHOME ]; then
+    for i in $ZSHHOME/**/*; do
+        [[ ${i##*/} = *.zsh ]] &&
+            [ \( -f $i -o -h $i \) -a -r $i ] && . $i
+    done
+fi
