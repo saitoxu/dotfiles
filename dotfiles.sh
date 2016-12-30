@@ -65,7 +65,7 @@ if [ ! -d ${DOT_DIRECTORY} ]; then
 fi
 
 cd ${DOT_DIRECTORY}
-# source ./lib/brew
+source ./lib/git.sh
 
 link_files() {
   for f in .??*
@@ -84,7 +84,7 @@ link_files() {
 }
 
 initialize() {
-  # run_brew
+  run_git
 
   [ ${SHELL} != "/bin/zsh" ] && chsh -s /bin/zsh
   echo "$(tput setaf 2)Initialize complete!. ✔︎$(tput sgr0)"
