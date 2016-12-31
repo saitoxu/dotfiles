@@ -20,13 +20,13 @@ Commands:
   initialize
 
 Arguments:
-  -f $(tput setaf 1)** warning **$(tput sgr0) Overwrite dotfiles.
+  -f $(tput setaf 1)** Warning **$(tput sgr0) Overwrite dotfiles.
   -h Print help (this message)
 EOF
   exit 1
 }
 
-while getopts :f:h opt; do
+while getopts "fh" opt; do
   case ${opt} in
     f)
       OVERWRITE=true
@@ -43,7 +43,7 @@ case ${OSTYPE} in
   darwin*)
     ;;
   *)
-    echo $(tput setaf 1)Working only OS X!!$(tput sgr0)
+    echo "$(tput setaf 1)Working only OS X!!$(tput sgr0)"
     exit 1
     ;;
 esac
@@ -61,7 +61,7 @@ if [ ! -d ${DOT_DIRECTORY} ]; then
     rm -f ${HOME}/dotfiles.tar.gz
   fi
 
-  echo $(tput setaf 2)Download dotfiles complete!. ✔︎$(tput sgr0)
+  echo "$(tput setaf 2)Download dotfiles complete! ✔︎$(tput sgr0)"
 fi
 
 cd ${DOT_DIRECTORY}
@@ -80,14 +80,14 @@ link_files() {
     fi
   done
 
-  echo "$(tput setaf 2)Deploy dotfiles complete!. ✔︎$(tput sgr0)"
+  echo "$(tput setaf 2)Deploy dotfiles complete! ✔︎$(tput sgr0)"
 }
 
 initialize() {
   run_git
 
   [ ${SHELL} != "/bin/zsh" ] && chsh -s /bin/zsh
-  echo "$(tput setaf 2)Initialize complete!. ✔︎$(tput sgr0)"
+  echo "$(tput setaf 2)Initialize complete! ✔︎$(tput sgr0)"
 }
 
 command=$1
