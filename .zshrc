@@ -74,11 +74,6 @@ esac
 # ------------------------------
 # Other
 # ------------------------------
-if has "nvm"; then
-  export NVM_DIR="${HOME}/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-fi
-
 if has "pyenv"; then
   export PYENV_ROOT="${HOME}/.pyenv"
   export PATH="$PATH:${PYENV_ROOT}/bin"
