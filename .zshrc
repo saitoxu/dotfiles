@@ -17,6 +17,7 @@ has() {
 setopt correct
 setopt auto_cd
 setopt no_beep
+setopt nonomatch
 
 # ------------------------------
 # Completion
