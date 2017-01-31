@@ -7,6 +7,7 @@ export LC_ALL=ja_JP.UTF-8
 export TERM=xterm-256color
 export PATH=$PATH:/usr/local/sbin
 export HOMEBREW_CASK_OPTS="--appdir=/Applications"
+export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer/
 
 bindkey -e
 
@@ -37,6 +38,7 @@ alias ls='ls -GF'
 alias la='ls -a'
 alias ll='ls -al'
 alias grep='grep --color'
+alias symbolicatecrash='/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Resources/symbolicatecrash'
 
 # ------------------------------
 # Look & Feel
