@@ -78,7 +78,11 @@ esac
 # ------------------------------
 # Other
 # ------------------------------
-export PATH=$HOME/.nodebrew/current/bin:$PATH
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# workaround for https://github.com/yarnpkg/yarn/issues/1321
+export PATH="${HOME}/.config/yarn/global/node_modules/.bin:${PATH}"
 
 if has "pyenv"; then
   export PYENV_ROOT="${HOME}/.pyenv"
