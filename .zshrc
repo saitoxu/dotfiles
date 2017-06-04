@@ -20,6 +20,9 @@ setopt auto_cd
 setopt no_beep
 setopt nonomatch
 
+autoload -Uz promptinit
+promptinit
+
 # ------------------------------
 # Completion
 # ------------------------------
@@ -45,22 +48,6 @@ alias symbolicatecrash='/Applications/Xcode.app/Contents/SharedFrameworks/DVTFou
 # ------------------------------
 autoload colors
 colors
-case ${UID} in
-0)
-  PROMPT="%B%{${fg[red]}%}%/#%{${reset_color}%}%b "
-  PROMPT2="%B%{${fg[red]}%}%_#%{${reset_color}%}%b "
-  SPROMPT="%B%{${fg[red]}%}%r is correct? [n,y,a,e]:%{${reset_color}%}%b "
-  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-    PROMPT="%{${fg[cyan]}%}$(echo ${HOST%%.*} | tr '[a-z]' '[A-Z]') ${PROMPT}"
-  ;;
-*)
-  PROMPT="%{${fg[green]}%}%/%%%{${reset_color}%} "
-  PROMPT2="%{${fg[green]}%}%_%%%{${reset_color}%} "
-  SPROMPT="%{${fg[green]}%}%r is correct? [n,y,a,e]:%{${reset_color}%} "
-  [ -n "${REMOTEHOST}${SSH_CONNECTION}" ] &&
-    PROMPT="%{${fg[cyan]}%}$(echo ${HOST%%.*} | tr '[a-z]' '[A-Z]') ${PROMPT}"
-  ;;
-esac
 
 # Set terminal title including current directory
 case "${TERM}" in
@@ -83,6 +70,7 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 # workaround for https://github.com/yarnpkg/yarn/issues/1321
 export PATH="${HOME}/.config/yarn/global/node_modules/.bin:${PATH}"
+export PATH="$HOME/.yarn/bin:$PATH"
 
 if has "pyenv"; then
   export PYENV_ROOT="${HOME}/.pyenv"
@@ -102,3 +90,9 @@ if [ -d $ZSHHOME -a -r $ZSHHOME -a -x $ZSHHOME ]; then
     [[ ${i##*/} = *.zsh ]] && [ \( -f $i -o -h $i \) -a -r $i ] && . $i
   done
 fi
+
+# ------------------------------
+# Prezto
+# ------------------------------
+
+source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
