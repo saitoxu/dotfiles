@@ -10,5 +10,6 @@ run_git() {
     git config --global color.branch auto
     git config --global core.precomposeunicode true
     git config --global core.quotepath false
+    git config --global core.ignorecase false
   fi
 }

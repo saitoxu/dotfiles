@@ -1,5 +1,4 @@
-dotfiles
-========
+# dotfiles
 
 OS X dotfiles.
 
