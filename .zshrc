@@ -42,6 +42,7 @@ alias la='ls -a'
 alias ll='ls -al'
 alias grep='grep --color'
 alias symbolicatecrash='/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Resources/symbolicatecrash'
+alias dc='docker-compose'
 
 # ------------------------------
 # Look & Feel
