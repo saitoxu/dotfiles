@@ -88,6 +88,9 @@ export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/tools
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 
+export ANDROID_SDK=/Users/yosuke.saito/Library/Android/sdk
+export ANDROID_NDK=/Users/yosuke.saito/android-ndk-r10e
+
 # Read .zsh files
 ZSHHOME="${HOME}/.zsh.d"
 if [ -d $ZSHHOME -a -r $ZSHHOME -a -x $ZSHHOME ]; then
@@ -96,8 +99,20 @@ if [ -d $ZSHHOME -a -r $ZSHHOME -a -x $ZSHHOME ]; then
   done
 fi
 
+# AWS
+export AWS_ACCESS_KEY_ID=`grep aws_access_key_id ~/.aws/credentials | head -n 1 | awk '{ print $3 }'`
+export AWS_SECRET_ACCESS_KEY=`grep aws_secret_access_key ~/.aws/credentials | head -n 1 | awk '{ print $3 }'`
+export AWS_DEFAULT_REGION=ap-northeast-1
+
 # ------------------------------
 # Prezto
 # ------------------------------
 
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+
+# tabtab source for serverless package
+# uninstall by removing these lines or running `tabtab uninstall serverless`
+[[ -f /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
+# tabtab source for sls package
+# uninstall by removing these lines or running `tabtab uninstall sls`
+[[ -f /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
