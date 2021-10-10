@@ -69,8 +69,7 @@ esac
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-# workaround for https://github.com/yarnpkg/yarn/issues/1321
-export PATH="${HOME}/.config/yarn/global/node_modules/.bin:${PATH}"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 if has "pyenv"; then
   export PYENV_ROOT="${HOME}/.pyenv"
@@ -112,7 +111,7 @@ source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 
 # tabtab source for serverless package
 # uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
+# [[ -f /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/serverless.zsh
 # tabtab source for sls package
 # uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh
+# [[ -f /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/yosuke.saito/.config/yarn/global/node_modules/tabtab/.completions/sls.zsh

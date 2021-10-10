@@ -2,30 +2,18 @@
 
 OS X dotfiles.
 
-## Installation
-The installation step requires the [XCode Command Line Tools](https://developer.apple.com/downloads)
+## How to use
 
 ```sh
-$ java -v
-$ xcode-select --install
-```
-
-Run the following commnad.
-
-```sh
-$ bash -c "$(curl -fsSL raw.github.com/saitoxu/dotfiles/master/dotfiles)"
-# Overwrite dotfiles and deploy
-$ bash -c "$(curl -fsSL raw.github.com/saitoxu/dotfiles/master/dotfiles)" -- -f -s deploy
-```
-
-## Initialize OS X
-
-```sh
+$ cd ~
+$ git clone git@github.com:saitoxu/dotfiles.git
 $ ~/dotfiles/dotfiles.sh initialize
-```
-
-## Deploy dotfiles
-
-```sh
 $ ~/dotfiles/dotfiles.sh deploy
 ```
+
+## After install
+
+- Put `.zpreztorc` and `.zprezto/` from old mac
+- Install [powerline/fonts](https://github.com/powerline/fonts)
+- Select the installed font on iTerm
+- Change the color theme of iTerm
