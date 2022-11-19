@@ -43,6 +43,8 @@ alias ll='ls -al'
 alias grep='grep --color'
 alias symbolicatecrash='/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Resources/symbolicatecrash'
 alias dc='docker compose'
+alias start-dev='aws ec2 start-instances --instance-ids i-0a840df9ecfac7bd9 && aws ec2 wait instance-running --instance-ids i-0a840df9ecfac7bd9'
+alias stop-dev='aws ec2 stop-instances --instance-ids i-0a840df9ecfac7bd9 && aws ec2 wait instance-stopped --instance-ids i-0a840df9ecfac7bd9'
 
 # ------------------------------
 # Look & Feel
