@@ -42,7 +42,7 @@ alias la='ls -a'
 alias ll='ls -al'
 alias grep='grep --color'
 alias symbolicatecrash='/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Resources/symbolicatecrash'
-alias dc='docker-compose'
+alias dc='docker compose'
 
 # ------------------------------
 # Look & Feel
@@ -81,14 +81,20 @@ if has "rbenv"; then
   export PATH=~/.rbenv/shims:$PATH
   eval "$(rbenv init -)"
 fi
+export PATH=${HOME}/.gem/ruby/2.7.0/bin:$PATH
+
+# PHP
+export PATH="/usr/local/opt/php@7.4/bin:$PATH"
+export PATH="/usr/local/opt/php@7.4/sbin:$PATH"
 
 # Android
 export ANDROID_HOME=$HOME/Library/Android/sdk
+export PATH=$PATH:$ANDROID_HOME/emulator
 export PATH=$PATH:$ANDROID_HOME/tools
+export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
-
-export ANDROID_SDK=/Users/yosuke.saito/Library/Android/sdk
-export ANDROID_NDK=/Users/yosuke.saito/android-ndk-r10e
+# export ANDROID_SDK=/Users/yosuke.saito/Library/Android/sdk
+# export ANDROID_NDK=/Users/yosuke.saito/android-ndk-r10e
 
 # Read .zsh files
 ZSHHOME="${HOME}/.zsh.d"
@@ -102,6 +108,9 @@ fi
 export AWS_ACCESS_KEY_ID=`grep aws_access_key_id ~/.aws/credentials | head -n 1 | awk '{ print $3 }'`
 export AWS_SECRET_ACCESS_KEY=`grep aws_secret_access_key ~/.aws/credentials | head -n 1 | awk '{ print $3 }'`
 export AWS_DEFAULT_REGION=ap-northeast-1
+
+# binutils
+export PATH="/usr/local/opt/binutils/bin:$PATH"
 
 # ------------------------------
 # Prezto
