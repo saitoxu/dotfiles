@@ -43,8 +43,8 @@ alias ll='ls -al'
 alias grep='grep --color'
 alias symbolicatecrash='/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Resources/symbolicatecrash'
 alias dc='docker compose'
-alias start-dev='aws ec2 start-instances --instance-ids i-0a840df9ecfac7bd9 && aws ec2 wait instance-running --instance-ids i-0a840df9ecfac7bd9'
-alias stop-dev='aws ec2 stop-instances --instance-ids i-0a840df9ecfac7bd9 && aws ec2 wait instance-stopped --instance-ids i-0a840df9ecfac7bd9'
+alias start-dev='aws ec2 start-instances --profile default --instance-ids i-0a840df9ecfac7bd9 && aws ec2 wait instance-running --profile default --instance-ids i-0a840df9ecfac7bd9'
+alias stop-dev='aws ec2 stop-instances --profile default --instance-ids i-0a840df9ecfac7bd9 && aws ec2 wait instance-stopped --profile default --instance-ids i-0a840df9ecfac7bd9'
 
 # ------------------------------
 # Look & Feel
@@ -113,6 +113,9 @@ export AWS_DEFAULT_REGION=ap-northeast-1
 
 # binutils
 export PATH="/usr/local/opt/binutils/bin:$PATH"
+
+# MySQL Client
+export PATH="/usr/local/opt/mysql-client/bin:$PATH"
 
 # ------------------------------
 # Prezto
