@@ -19,6 +19,8 @@ setopt correct
 setopt auto_cd
 setopt no_beep
 setopt nonomatch
+setopt interactivecomments
+setopt nocorrect
 
 autoload -Uz promptinit
 promptinit
