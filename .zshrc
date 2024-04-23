@@ -45,8 +45,6 @@ alias ll='ls -al'
 alias grep='grep --color'
 alias symbolicatecrash='/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Resources/symbolicatecrash'
 alias dc='docker compose'
-alias start-dev='aws ec2 start-instances --profile default --instance-ids i-0a840df9ecfac7bd9 && aws ec2 wait instance-running --profile default --instance-ids i-0a840df9ecfac7bd9'
-alias stop-dev='aws ec2 stop-instances --profile default --instance-ids i-0a840df9ecfac7bd9 && aws ec2 wait instance-stopped --profile default --instance-ids i-0a840df9ecfac7bd9'
 
 # ------------------------------
 # Look & Feel
@@ -99,6 +97,9 @@ export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
 # export ANDROID_SDK=/Users/yosuke.saito/Library/Android/sdk
 # export ANDROID_NDK=/Users/yosuke.saito/android-ndk-r10e
+
+# ngrok
+export PATH=$PATH:$HOME/.ngrok/bin
 
 # Read .zsh files
 ZSHHOME="${HOME}/.zsh.d"
