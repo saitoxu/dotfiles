@@ -118,7 +118,8 @@ export AWS_DEFAULT_REGION=ap-northeast-1
 export PATH="/usr/local/opt/binutils/bin:$PATH"
 
 # MySQL Client
-export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+# export PATH="/usr/local/opt/mysql-client/bin:$PATH"
+export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 
 # ------------------------------
 # Prezto
