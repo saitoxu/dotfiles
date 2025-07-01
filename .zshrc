@@ -45,6 +45,7 @@ alias ll='ls -al'
 alias grep='grep --color'
 alias symbolicatecrash='/Applications/Xcode.app/Contents/SharedFrameworks/DVTFoundation.framework/Resources/symbolicatecrash'
 alias dc='docker compose'
+alias ccusage='npx ccusage@latest'
 if ! command -v python &> /dev/null && command -v python3 &> /dev/null; then
   alias python=python3
 fi
@@ -95,11 +96,10 @@ export PATH="/usr/local/opt/php@7.4/sbin:$PATH"
 # Android
 export ANDROID_HOME=$HOME/Library/Android/sdk
 export PATH=$PATH:$ANDROID_HOME/emulator
-export PATH=$PATH:$ANDROID_HOME/tools
-export PATH=$PATH:$ANDROID_HOME/tools/bin
+# export PATH=$PATH:$ANDROID_HOME/tools
+# export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
-# export ANDROID_SDK=/Users/yosuke.saito/Library/Android/sdk
-# export ANDROID_NDK=/Users/yosuke.saito/android-ndk-r10e
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
 
 # ngrok
 export PATH=$PATH:$HOME/.ngrok/bin
@@ -173,4 +173,20 @@ compctl -K _complete_invoke + -f invoke inv
 
 # vim: set ft=sh :
 
+# bun
+export BUN_INSTALL="$HOME/Library/Application Support/reflex/bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/yosuke.saito/Documents/dev/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yosuke.saito/Documents/dev/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/yosuke.saito/Documents/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yosuke.saito/Documents/dev/google-cloud-sdk/completion.zsh.inc'; fi
+. "/Users/yosuke.saito/.deno/env"
+
+# Add deno completions to search path
+if [[ ":$FPATH:" != *":/Users/yosuke.saito/completions:"* ]]; then export FPATH="/Users/yosuke.saito/completions:$FPATH"; fi
+
 source "$HOME/.local/bin/env"
+
+alias claude="/Users/yosuke.saito/.claude/local/claude"
