@@ -182,7 +182,9 @@ if [ -f '/Users/yosuke.saito/Documents/dev/google-cloud-sdk/path.zsh.inc' ]; the
 
 # The next line enables shell command completion for gcloud.
 if [ -f '/Users/yosuke.saito/Documents/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yosuke.saito/Documents/dev/google-cloud-sdk/completion.zsh.inc'; fi
-. "/Users/yosuke.saito/.deno/env"
+if [ -f "/Users/yosuke.saito/.deno/env" ]; then
+  . "/Users/yosuke.saito/.deno/env"
+fi
 
 # Add deno completions to search path
 if [[ ":$FPATH:" != *":/Users/yosuke.saito/completions:"* ]]; then export FPATH="/Users/yosuke.saito/completions:$FPATH"; fi
