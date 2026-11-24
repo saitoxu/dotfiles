@@ -2,7 +2,7 @@
 
 set -e
 DOT_DIRECTORY="${HOME}/dotfiles"
-DOT_TARBALL="https://github.com/saitoxu/dotfiles/tarball/master"
+DOT_TARBALL="https://github.com/saitoxu/dotfiles/tarball/main"
 REMOTE_URL="git@github.com:saitoxu/dotfiles.git"
 
 has() {
@@ -16,7 +16,7 @@ Usage:
   $name [arguments] [command]
 
 Commands:
-  deploy
+  deploy [--profile <work|personal>]
   initialize
 
 Arguments:
@@ -76,11 +76,22 @@ link_files() {
       # If you have ignore files, add file/directory name here
       [[ ${f} = ".git" ]] && continue
       [[ ${f} = ".gitignore" ]] && continue
+      [[ ${f} = ".claude" ]] && continue
       ln -snfv ${DOT_DIRECTORY}/${f} ${HOME}/${f}
     fi
   done
 
   echo "$(tput setaf 2)Deploy dotfiles complete! ✔︎$(tput sgr0)"
+}
+
+set_profile() {
+  local profile=$1
+  if [ ! -f "${DOT_DIRECTORY}/zsh/profiles/${profile}.zsh" ]; then
+    echo "$(tput setaf 1)Unknown profile: ${profile}$(tput sgr0)"
+    exit 1
+  fi
+  echo "${profile}" > ${HOME}/.dotfiles_profile
+  echo "$(tput setaf 2)Profile set to ${profile} ✔︎$(tput sgr0)"
 }
 
 initialize() {
@@ -95,6 +106,10 @@ command=$1
 
 case $command in
   deploy)
+    if [ "$1" = "--profile" ]; then
+      [ -z "$2" ] && usage
+      set_profile "$2"
+    fi
     link_files
     ;;
   init*)
