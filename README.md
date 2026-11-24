@@ -15,7 +15,7 @@ git clone git@github.com:saitoxu/dotfiles.git
 | コマンド | 内容 |
 |---|---|
 | `initialize` | git のグローバル設定、prezto と Powerline フォントのインストール、ログインシェルを zsh に変更 |
-| `deploy` | リポジトリ直下のドットファイルを `~` にシンボリックリンクし、iTerm のプロファイルを配置 |
+| `deploy` | リポジトリ直下のドットファイルを `~` にシンボリックリンクし、iTerm のプロファイルを配置。Powerline フォントがなければ警告 |
 | `deploy --profile <name>` | 上記に加え、`~/.dotfiles_profile` に profile 名を書き込む |
 | `-f` | 既存ファイルを削除して上書きリンク |
 
@@ -56,7 +56,8 @@ profile を切り替えるときは `~/.dotfiles_profile` を書き換えるか�
 | 特定の環境でのみ使う | `zsh/profiles/<name>.zsh` |
 | マシン固有・秘密情報（git に入れたくない） | `~/.zshrc.local` |
 
-ツールのパスなど、存在しない環境があるだけのものは `[ -f ... ] && source ...` のように存在チェックを付けて common に置く。
+ツールのパスなど、存在しない環境があるだけのものは `if [ -f ... ]; then source ...; fi` のように存在チェックを付けて common に置く。
+（`[ -f ... ] && source ...` の形はファイル末尾に置くと、ファイルがない環境で zsh 起動直後の `$?` が 1 になるので避ける）
 profile に分けるのは、環境によって値や挙動を変えたいものだけにする。
 
 ## prezto

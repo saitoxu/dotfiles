@@ -94,6 +94,12 @@ link_iterm_profile() {
   echo "$(tput setaf 2)iTerm profile linked ✔︎$(tput sgr0)"
 }
 
+check_fonts() {
+  if ! ls ${HOME}/Library/Fonts /Library/Fonts 2>/dev/null | grep -q "Ubuntu Mono derivative Powerline"; then
+    echo "$(tput setaf 3)Powerline font not found. Run: brew install --cask font-ubuntu-mono-derivative-powerline$(tput sgr0)"
+  fi
+}
+
 set_profile() {
   local profile=$1
   if [ ! -f "${DOT_DIRECTORY}/zsh/profiles/${profile}.zsh" ]; then
@@ -139,6 +145,7 @@ case $command in
     fi
     link_files
     link_iterm_profile
+    check_fonts
     ;;
   init*)
     initialize
