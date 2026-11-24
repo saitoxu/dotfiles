@@ -125,6 +125,9 @@ export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 # Prezto
 # ------------------------------
 
+# 自作テーマ（zsh/prompts/prompt_*_setup）を prompt モジュールから見えるようにする
+fpath=("${DOTFILES_DIR:-$HOME/dotfiles}/zsh/prompts" $fpath)
+
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 
 # tabtab source for serverless package

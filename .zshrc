@@ -19,6 +19,8 @@ else
 fi
 
 # マシン固有の設定（git 管理外）
-[ -r "${HOME}/.zshrc.local" ] && source "${HOME}/.zshrc.local"
+if [ -r "${HOME}/.zshrc.local" ]; then
+  source "${HOME}/.zshrc.local"
+fi
 
 # vim: set ft=sh :

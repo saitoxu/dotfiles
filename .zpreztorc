@@ -1,0 +1,20 @@
+# .zpreztorc
+
+# Color output (auto set to 'no' on dumb terminals).
+zstyle ':prezto:*:*' color 'yes'
+
+# Set the Prezto modules to load (browse modules).
+# The order matters.
+zstyle ':prezto:load' pmodule \
+  'environment' \
+  'terminal' \
+  'editor' \
+  'history' \
+  'spectrum' \
+  'utility' \
+  'completion' \
+  'prompt' \
+  'archive' \
+  'command-not-found'
+
+zstyle ':prezto:module:prompt' theme 'powerline2'
