@@ -1,11 +1,11 @@
 # ------------------------------
 # General
 # ------------------------------
+typeset -U path PATH
 export EDITOR=vim
 export LANG=ja_JP.UTF-8
 export LC_ALL=ja_JP.UTF-8
 export TERM=xterm-256color
-export HOMEBREW_CASK_OPTS="--appdir=/Applications"
 export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer/
 
 bindkey -e
@@ -14,12 +14,10 @@ has() {
   type "$1" > /dev/null 2>&1
 }
 
-setopt correct
 setopt auto_cd
 setopt no_beep
 setopt nonomatch
 setopt interactivecomments
-setopt nocorrect
 
 autoload -Uz promptinit
 promptinit
@@ -27,7 +25,6 @@ promptinit
 # ------------------------------
 # Completion
 # ------------------------------
-autoload -U compinit; compinit
 setopt auto_list # 補完候補を一覧で表示する(d)
 setopt auto_menu # 補完キー連打で補完候補を順に表示する(d)
 setopt list_packed
@@ -77,7 +74,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 if has "rbenv"; then
-  export PATH=~/.rbenv/shims:$PATH
   eval "$(rbenv init -)"
 fi
 export PATH=${HOME}/.gem/ruby/2.7.0/bin:$PATH
@@ -88,7 +84,11 @@ export PATH=$PATH:$ANDROID_HOME/emulator
 # export PATH=$PATH:$ANDROID_HOME/tools
 # export PATH=$PATH:$ANDROID_HOME/tools/bin
 export PATH=$PATH:$ANDROID_HOME/platform-tools
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+if [ -d /Library/Java/JavaVirtualMachines/zulu-17.jdk ]; then
+  export JAVA_HOME=/Library/Java/JavaVirtualMachines/zulu-17.jdk/Contents/Home
+else
+  export JAVA_HOME=$(/usr/libexec/java_home 2>/dev/null)
+fi
 
 # ngrok
 export PATH=$PATH:$HOME/.ngrok/bin
@@ -107,6 +107,9 @@ export PATH="/opt/homebrew/opt/mysql-client/bin:$PATH"
 fpath=("${DOTFILES_DIR:-$HOME/dotfiles}/zsh/prompts" $fpath)
 
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+
+# prezto の utility モジュールが CORRECT を有効にするので、読み込み後に無効化する
+unsetopt correct
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
