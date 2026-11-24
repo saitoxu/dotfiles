@@ -113,8 +113,8 @@ if [ -d $ZSHHOME -a -r $ZSHHOME -a -x $ZSHHOME ]; then
 fi
 
 # AWS
-export AWS_ACCESS_KEY_ID=`grep aws_access_key_id ~/.aws/credentials | head -n 1 | awk '{ print $3 }'`
-export AWS_SECRET_ACCESS_KEY=`grep aws_secret_access_key ~/.aws/credentials | head -n 1 | awk '{ print $3 }'`
+# export AWS_ACCESS_KEY_ID=`grep aws_access_key_id ~/.aws/credentials | head -n 1 | awk '{ print $3 }'`
+# export AWS_SECRET_ACCESS_KEY=`grep aws_secret_access_key ~/.aws/credentials | head -n 1 | awk '{ print $3 }'`
 export AWS_DEFAULT_REGION=ap-northeast-1
 
 # binutils
@@ -174,21 +174,33 @@ compctl -K _complete_invoke + -f invoke inv
 # vim: set ft=sh :
 
 # bun
-export BUN_INSTALL="$HOME/Library/Application Support/reflex/bun"
+export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
 
 # The next line updates PATH for the Google Cloud SDK.
-if [ -f '/Users/yosuke.saito/Documents/dev/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/yosuke.saito/Documents/dev/google-cloud-sdk/path.zsh.inc'; fi
+if [ -f '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/path.zsh.inc'; fi
 
 # The next line enables shell command completion for gcloud.
-if [ -f '/Users/yosuke.saito/Documents/dev/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/yosuke.saito/Documents/dev/google-cloud-sdk/completion.zsh.inc'; fi
-if [ -f "/Users/yosuke.saito/.deno/env" ]; then
-  . "/Users/yosuke.saito/.deno/env"
-fi
-
-# Add deno completions to search path
-if [[ ":$FPATH:" != *":/Users/yosuke.saito/completions:"* ]]; then export FPATH="/Users/yosuke.saito/completions:$FPATH"; fi
+if [ -f '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc' ]; then . '/opt/homebrew/share/google-cloud-sdk/completion.zsh.inc'; fi
 
 source "$HOME/.local/bin/env"
 
-alias claude="/Users/yosuke.saito/.claude/local/claude"
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# cloudflared tunnel
+cftunnel() { cloudflared tunnel --url http://localhost:${1:-8000}; }
+
+# opencode
+alias oc='opencode'
+
+source "$HOME/github/saitoxu/my-whisper/scripts/whisper.sh"
+
+diff() {
+  command diff --color=auto "$@"
+}
+
+alias dnsreset='networksetup -setdnsservers Wi-Fi empty'
+alias aws-login='aws sso login --sso-session carat'
+
+# source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
